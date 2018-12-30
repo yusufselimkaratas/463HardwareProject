@@ -62,7 +62,7 @@ void loop() {
   
 
   // SET DUTY_CYCLE
-  DUTY=255-PID_OUT;
+  DUTY=PID_OUT
   
   //Drive the Transistor
   analogWrite(GATE,DUTY);
