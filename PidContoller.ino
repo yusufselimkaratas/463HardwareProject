@@ -2,10 +2,11 @@
 
 const int GATE=3;  //GATE PIN
 const int EMF=0;   //EMF PIN
+const int INT=2;   //INTERRUPT PIN
 
 
 
-double Setpoint;
+double Setpoint=1;
 double Measured_Voltage;
 double Measured_Value;
 double Real_Voltage;
@@ -24,7 +25,7 @@ double ResistanceRatio=100;  //It is expected as 2 MOhm-200 KOhm
 double VoltageSpeed_Ratio=0.189; //It is written according to Simulation
 
 void setup() {
-  // put your setup code here, to run once:
+  attachInterrupt(INT,setRef_Speed,RISING);
   pinMode(GATE,OUTPUT);
   pinMode(EMF,INPUT);
   pid.SetMode(AUTOMATIC);
@@ -32,6 +33,12 @@ void setup() {
   Serial.begin(9600);
   
 
+}
+
+void setRef_Speed()
+{
+  Serial.write("Please enter desired REFERENCE SPEED as RPM in 0-1500 interval");
+  Setpoint=Serial.parseInt();
 }
 
 void loop() {
@@ -62,7 +69,7 @@ void loop() {
   
 
   // SET DUTY_CYCLE
-  DUTY=PID_OUT
+  DUTY=255-PID_OUT;
   
   //Drive the Transistor
   analogWrite(GATE,DUTY);
